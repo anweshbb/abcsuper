@@ -1,0 +1,6 @@
+{
+  "name": "LiveSheet Supermarket",
+  "description": "A real-time supermarket storefront powered directly by a public Google Sheet with automatic live inventory synchronization.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
