@@ -98,16 +98,18 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
         <div className="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-xl">
           
           {/* Header */}
-          <div className="p-4 sm:p-6 border-b border-gray-100 flex items-center justify-between bg-emerald-700 text-white">
-            <div className="flex items-center gap-2">
-              <ShoppingBag className="w-5 h-5 text-emerald-200" />
-              <h3 className="text-lg font-bold">
+          <div className="p-4 sm:p-6 border-b border-emerald-100 flex items-center justify-between bg-emerald-50/80 text-emerald-950">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center">
+                <ShoppingBag className="w-4 h-4" />
+              </div>
+              <h3 className="text-base sm:text-lg font-bold">
                 {isSubmitted ? 'Order Confirmed!' : 'Checkout & Order Summary'}
               </h3>
             </div>
             <button
               onClick={onClose}
-              className="p-1 rounded-lg hover:bg-emerald-800 text-emerald-100 hover:text-white transition-colors cursor-pointer"
+              className="p-1.5 rounded-lg hover:bg-emerald-100 text-emerald-800 transition-colors cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>

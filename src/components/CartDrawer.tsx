@@ -101,17 +101,17 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
             </div>
           )}
 
-          {/* Cart Item List */}
-          <div className="flex-1 overflow-y-auto p-4 sm:p-6 divide-y divide-gray-100">
+          {/* Cart Item List - Single Line Compact Format */}
+          <div className="flex-1 overflow-y-auto p-3 divide-y divide-gray-100/90 space-y-0.5">
             {cart.length === 0 ? (
-              <div className="h-full flex flex-col items-center justify-center text-center p-6 space-y-4">
-                <div className="w-16 h-16 rounded-full bg-gray-100 text-gray-400 flex items-center justify-center">
-                  <ShoppingBag className="w-8 h-8" />
+              <div className="h-full flex flex-col items-center justify-center text-center p-6 space-y-3">
+                <div className="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600/70 flex items-center justify-center border border-emerald-100">
+                  <ShoppingBag className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-gray-900">Your cart is empty</h3>
+                  <h3 className="text-sm font-bold text-gray-900">Your cart is empty</h3>
                   <p className="mt-1 text-xs text-gray-500 max-w-xs">
-                    Browse the supermarket aisles and add fresh groceries to your cart.
+                    Browse the supermarket catalog and click "Add" to add items to your cart.
                   </p>
                 </div>
                 <button
@@ -125,73 +125,62 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
               cart.map(({ item, quantity }) => {
                 const isMax = quantity >= item.stock;
                 return (
-                  <div key={item.id} className="py-4 flex gap-3 sm:gap-4 items-center">
-                    <img
-                      src={item.imageUrl}
-                      alt={item.name}
-                      className="w-16 h-16 rounded-xl object-cover border border-gray-200 shrink-0 bg-gray-50"
-                    />
-                    <div className="flex-1 min-w-0">
-                      <h4 className="text-sm font-bold text-gray-900 truncate">
+                  <div 
+                    key={item.id} 
+                    className="py-2 px-2 rounded-lg hover:bg-gray-50 flex items-center justify-between gap-2 text-xs transition-colors"
+                  >
+                    {/* Item Name & Unit Info */}
+                    <div className="flex-1 min-w-0 pr-1">
+                      <h4 className="text-xs font-semibold text-gray-900 truncate leading-tight">
                         {item.name}
                       </h4>
-                      <div className="flex items-baseline gap-2 mt-0.5">
-                        <span className="text-xs font-bold text-gray-900 font-mono">
-                          {currencySymbol}{item.price.toFixed(2)}
-                        </span>
-                        {item.unit && (
-                          <span className="text-[11px] text-gray-500">
-                            /{item.unit}
-                          </span>
-                        )}
-                      </div>
-
-                      {/* Stock Warning */}
-                      {quantity > item.stock && (
-                        <div className="mt-1 flex items-center gap-1 text-[11px] text-red-600 font-medium">
-                          <AlertCircle className="w-3 h-3" />
-                          <span>Only {item.stock} left in stock!</span>
-                        </div>
-                      )}
-
-                      {/* Stepper */}
-                      <div className="mt-2 flex items-center justify-between">
-                        <div className="inline-flex items-center rounded-lg bg-gray-50 border border-gray-200 p-0.5">
-                          <button
-                            type="button"
-                            onClick={() => onUpdateQuantity(item.id, -1)}
-                            className="w-6 h-6 flex items-center justify-center rounded text-gray-600 hover:bg-gray-200 transition-colors cursor-pointer"
-                          >
-                            <Minus className="w-3 h-3" />
-                          </button>
-                          <span className="w-6 text-center text-xs font-bold text-gray-900 font-mono">
-                            {quantity}
-                          </span>
-                          <button
-                            type="button"
-                            onClick={() => onUpdateQuantity(item.id, 1)}
-                            disabled={isMax}
-                            className="w-6 h-6 flex items-center justify-center rounded text-gray-600 hover:bg-gray-200 disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer"
-                          >
-                            <Plus className="w-3 h-3" />
-                          </button>
-                        </div>
-
-                        <div className="text-right">
-                          <span className="text-sm font-bold text-emerald-900 font-mono">
-                            {currencySymbol}{(item.price * quantity).toFixed(2)}
-                          </span>
-                        </div>
+                      <div className="text-[10px] text-gray-400 font-mono">
+                        {currencySymbol}{item.price.toFixed(0)}{item.unit ? ` / ${item.unit}` : ''}
                       </div>
                     </div>
 
+                    {/* Stepper */}
+                    <div className="inline-flex items-center rounded-md bg-gray-100 border border-gray-200/90 p-0.5 shrink-0">
+                      <button
+                        type="button"
+                        onClick={() => onUpdateQuantity(item.id, -1)}
+                        title="Decrease"
+                        aria-label={`Decrease ${item.name}`}
+                        className="w-5 h-5 flex items-center justify-center rounded text-gray-600 hover:bg-white hover:text-gray-900 transition-colors cursor-pointer"
+                      >
+                        <Minus className="w-2.5 h-2.5" />
+                      </button>
+                      <span className="w-5 text-center text-[11px] font-bold text-gray-900 font-mono">
+                        {quantity}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => onUpdateQuantity(item.id, 1)}
+                        disabled={isMax}
+                        title={isMax ? 'Maximum stock reached' : 'Increase'}
+                        aria-label={`Increase ${item.name}`}
+                        className="w-5 h-5 flex items-center justify-center rounded text-gray-600 hover:bg-white hover:text-gray-900 disabled:opacity-25 transition-colors cursor-pointer"
+                      >
+                        <Plus className="w-2.5 h-2.5" />
+                      </button>
+                    </div>
+
+                    {/* Item Total Price */}
+                    <div className="w-14 text-right shrink-0">
+                      <span className="text-xs font-bold text-emerald-800 font-mono">
+                        {currencySymbol}{(item.price * quantity).toFixed(0)}
+                      </span>
+                    </div>
+
+                    {/* Delete Item */}
                     <button
                       type="button"
                       onClick={() => onRemoveItem(item.id)}
-                      title="Remove item"
-                      className="p-1.5 text-gray-400 hover:text-red-500 rounded-lg hover:bg-red-50 transition-colors cursor-pointer shrink-0"
+                      title={`Remove ${item.name}`}
+                      aria-label={`Remove ${item.name}`}
+                      className="p-1 text-gray-300 hover:text-red-500 rounded hover:bg-red-50 transition-colors cursor-pointer shrink-0"
                     >
-                      <Trash2 className="w-4 h-4" />
+                      <Trash2 className="w-3.5 h-3.5" />
                     </button>
                   </div>
                 );
